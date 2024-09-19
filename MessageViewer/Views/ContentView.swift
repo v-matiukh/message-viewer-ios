@@ -34,15 +34,15 @@ struct ContentView: View {
                             }
                     }
                     .listStyle(.plain)
-                    .onChange(of: viewModel.messages.count, { _, _ in
-                        if isAutoScroll, let last = viewModel.messages.last {
-                            withAnimation {
-                                proxy.scrollTo(last.id)  // <-- here
-                            }
+                    .onChange(of: viewModel.messages.count, perform: { _ in if isAutoScroll, let last = viewModel.messages.last {
+                        withAnimation {
+                            proxy.scrollTo(last.id)  // <-- here
                         }
+                    }
                     })
                 }
-                HStack {
+                
+                HStack(alignment: .center) {
                     TextField("Enter your message", text: .init(get: {
                         viewModel.newMessage ?? ""
                     }, set: { newValue in
@@ -56,14 +56,14 @@ struct ContentView: View {
                     }
                     
                 }
-                .padding(.vertical, 10)
+                .padding(.bottom, 20)
+                .padding(.top, 10)
                 .padding(.horizontal, 6)
                 .background(Color(uiColor: UIColor(white: 0.4, alpha: 0.5)))
             }
             .onTapGesture {
                 isFocusedInput = false
             }
-            .safeAreaPadding(.bottom, 15)
             .onAppear {
                 viewModel.startMessageUpdates()
             }
